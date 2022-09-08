@@ -14,10 +14,14 @@ SELECT
     a.MotivoCancelamento,
     a.LiberaçãoUsuário
 FROM Ourobase.dbo.Mov_Estoque a
-WHERE a.IdMovimento in
+WHERE a.IdMovimento =
       (SELECT a.fk_int_Movimento
-FROM OuroWebServiceLive.dbo.tab_Pedido a
-WHERE fk_int_PedidoSite = @pedido)
+    FROM OuroWebServiceLive.dbo.tab_Pedido a
+    WHERE fk_int_PedidoSite = @pedido) or a.IdMovimento = (SELECT int_IdMovimento
+    FROM Ourobase.dbo.Tab_FarmaPedido
+    WHERE int_NroPedidoSite = @pedido)
+
+
 
 -- Pedido
 SELECT
@@ -32,10 +36,12 @@ SELECT
     a.MotivoCancelamento,
     a.LiberaçãoUsuário
 FROM Ourobase.dbo.Mov_Estoque a
-WHERE a.IdOrçamentoUtilizado in
+WHERE a.IdOrçamentoUtilizado =
       (SELECT fk_int_Movimento
-FROM OuroWebServiceLive.dbo.tab_Pedido
-WHERE fk_int_PedidoSite =  @pedido)
+    FROM OuroWebServiceLive.dbo.tab_Pedido
+    WHERE fk_int_PedidoSite =  @pedido) or a.IdMovimento = (SELECT int_IdMovimento
+    FROM Ourobase.dbo.Tab_FarmaPedido
+    WHERE int_NroPedidoSite = @pedido)
 
 -- Venda
 SELECT
@@ -52,9 +58,11 @@ SELECT
 FROM Ourobase..Mov_Estoque a
 WHERE a.IdPedidoUtilizado in
       (SELECT a.IdMovimento
-FROM Ourobase..Mov_Estoque a
-WHERE a.IdOrçamentoUtilizado in
+    FROM Ourobase..Mov_Estoque a
+    WHERE a.IdOrçamentoUtilizado =
              (SELECT fk_int_Movimento
-FROM OuroWebServiceLive.dbo.tab_Pedido
-WHERE fk_int_PedidoSite =  @pedido)  
-	  )
+    FROM OuroWebServiceLive.dbo.tab_Pedido
+    WHERE fk_int_PedidoSite =  @pedido)  
+	  ) or a.IdMovimento = (SELECT int_IdMovimento
+    FROM Ourobase.dbo.Tab_FarmaPedido
+    WHERE int_NroPedidoSite = @pedido)

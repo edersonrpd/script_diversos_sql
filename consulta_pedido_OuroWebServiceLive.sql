@@ -1,3 +1,6 @@
+USE OuroWebServiceLive
+GO
+
 SELECT
     CASE
         WHEN b.str_msg_Documento = 'ENTIRE' THEN 'FOCO PDV'
@@ -6,7 +9,7 @@ SELECT
     b.fk_int_PedidoSite 'PEDIDO',
     b.str_Excecao,
     b.dte_Pedido 'DATA',
-    c.NúmeroDocumento 'N_DOC_ORC',
+    c.NÃºmeroDocumento 'N_DOC_ORC',
     c.IdMovimento 'ID_MOV_ORC',
     d.str_IdItem 'ID_PROD',
     d.str_Descricao 'DESCRICAO',
